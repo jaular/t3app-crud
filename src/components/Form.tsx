@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { z } from "zod";
 import { useForm, zodResolver } from "@mantine/form";
 import { TextInput, Select, Button } from "@mantine/core";
@@ -17,7 +16,7 @@ const schema = z.object({
     .string()
     .min(2, { message: "Last name should have at least 2 letters" })
     .max(30, { message: "Max 30 letters" }),
-  gender: z.string(),
+  gender: z.string().min(2, { message: "Pick one" }),
 });
 
 type ValuesProps = {
@@ -28,7 +27,6 @@ type ValuesProps = {
 };
 
 const Form = () => {
-  const [value, setValue] = useState("");
   const utils = trpc.useContext();
 
   const createPatient = trpc.useMutation(["patient.create"], {
