@@ -45,7 +45,7 @@ const DataList = ({ data, onUpdate, onDelete }: Props) => {
           ))}
         </List>
       ) : (
-        <p className="text-2xl font-bold">There's no data.</p>
+        <p className="text-2xl font-bold">There is no data.</p>
       )}
     </>
   );
