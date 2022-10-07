@@ -15,7 +15,7 @@ const DataList = ({ data, onUpdate, onDelete }: Props) => {
       {data?.length ? (
         <List>
           {data?.map((item) => (
-            <List.Item key={item.documentId}>
+            <List.Item key={item.documentId} className="my-4">
               <Group>
                 <Link href={`/patient/${item.documentId}`} passHref>
                   <Anchor component="a">
