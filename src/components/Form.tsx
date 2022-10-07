@@ -1,68 +1,36 @@
-import { z } from "zod";
-import { useForm, zodResolver } from "@mantine/form";
-import { TextInput, Select, Button } from "@mantine/core";
-import { trpc } from "~/utils/trpc";
+import type { UseFormReturnType } from "@mantine/form";
+import type { PatientProps } from "~/lib/types";
+import { Button, Select, TextInput } from "@mantine/core";
 
-const schema = z.object({
-  documentId: z
-    .string()
-    .min(7, { message: "Document ID should have at least 7 letters" })
-    .max(8, { message: "Max 8 letters" }),
-  firstName: z
-    .string()
-    .min(2, { message: "First name should have at least 2 letters" })
-    .max(30, { message: "Max 30 letters" }),
-  lastName: z
-    .string()
-    .min(2, { message: "Last name should have at least 2 letters" })
-    .max(30, { message: "Max 30 letters" }),
-  gender: z.string().min(2, { message: "Pick one" }),
-});
-
-type ValuesProps = {
-  documentId: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
+type Props = {
+  form: UseFormReturnType<PatientProps>;
+  onSubmit: (patient: PatientProps) => Promise<void>;
+  onReset: () => void;
+  createState: boolean;
+  createPatient: boolean;
+  updatePatient: boolean;
 };
 
-const Form = () => {
-  const utils = trpc.useContext();
-
-  const createPatient = trpc.useMutation(["patient.create"], {
-    async onSuccess() {
-      await utils.invalidateQueries(["patient.getAll"]);
-    },
-  });
-
-  const form = useForm({
-    validate: zodResolver(schema),
-    initialValues: {
-      documentId: "",
-      firstName: "",
-      lastName: "",
-      gender: "",
-    },
-  });
-
-  const handleSubmit = async (values: ValuesProps) => {
-    try {
-      await createPatient.mutateAsync(values);
-      form.reset();
-    } catch {}
-  };
-
+const Form = ({
+  form,
+  createState,
+  createPatient,
+  updatePatient,
+  onSubmit,
+  onReset,
+}: Props) => {
   return (
     <>
       <form
-        className="space-y-4"
-        onSubmit={form.onSubmit((values) => handleSubmit(values))}
+        className="space-y-8"
+        onSubmit={form.onSubmit((values) => onSubmit(values))}
         autoComplete="off"
       >
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6">
           <TextInput
             label="Document ID"
             placeholder="Document ID"
+            disabled={!createState}
             withAsterisk
             {...form.getInputProps("documentId")}
           />
@@ -82,12 +50,29 @@ const Form = () => {
             label="Gender"
             placeholder="Pick one"
             data={["Male", "Female", "Other"]}
+            withAsterisk
             {...form.getInputProps("gender")}
           />
+          <TextInput
+            label="Email"
+            placeholder="Email"
+            withAsterisk
+            {...form.getInputProps("email")}
+          />
         </div>
-        <Button type="submit" disabled={createPatient.isLoading}>
-          Submit
-        </Button>
+        <div className="space-x-4">
+          <Button type="submit" disabled={createPatient || updatePatient}>
+            Submit
+          </Button>
+          <Button
+            color="red"
+            onClick={() => {
+              onReset();
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
     </>
   );

@@ -1,13 +1,14 @@
 import { Prisma } from "@prisma/client";
 import { createRouter } from "./context";
 import { z } from "zod";
+import { patientSchema } from "~/lib/schemas";
 
 const defaultPatientSelect = Prisma.validator<Prisma.PatientSelect>()({
-  id: true,
   documentId: true,
   firstName: true,
   lastName: true,
   gender: true,
+  email: true,
   createdAt: true,
 });
 
@@ -24,12 +25,15 @@ export const patientRouter = createRouter()
   // By id
   .query("byId", {
     input: z.object({
-      id: z.string(),
+      documentId: z
+        .string()
+        .min(7, { message: "Document ID should have at least 7 letters" })
+        .max(8, { message: "Max 8 letters" }),
     }),
     async resolve({ input, ctx }) {
-      const { id } = input;
+      const { documentId } = input;
       const patient = await ctx.prisma.patient.findUnique({
-        where: { id },
+        where: { documentId },
         select: defaultPatientSelect,
       });
       return patient;
@@ -37,12 +41,7 @@ export const patientRouter = createRouter()
   })
   // Create patient
   .mutation("create", {
-    input: z.object({
-      documentId: z.string().min(7).max(8),
-      firstName: z.string().min(1).max(30),
-      lastName: z.string().min(1).max(30),
-      gender: z.string().min(1).max(30),
-    }),
+    input: patientSchema,
     async resolve({ input, ctx }) {
       const patient = await ctx.prisma.patient.create({
         data: input,
@@ -53,17 +52,11 @@ export const patientRouter = createRouter()
   })
   // Edit patient
   .mutation("update", {
-    input: z.object({
-      id: z.string(),
-      documentId: z.string().min(7).max(8),
-      firstName: z.string().min(1).max(32),
-      lastName: z.string().min(1).max(32),
-      gender: z.string().min(1).max(30),
-    }),
+    input: patientSchema,
     async resolve({ input, ctx }) {
-      const { id } = input;
+      const { documentId } = input;
       const patient = await ctx.prisma.patient.update({
-        where: { id },
+        where: { documentId },
         data: input,
       });
       return patient;
@@ -72,12 +65,15 @@ export const patientRouter = createRouter()
   // Delete patient
   .mutation("delete", {
     input: z.object({
-      id: z.string(),
+      documentId: z
+        .string()
+        .min(7, { message: "Document ID should have at least 7 letters" })
+        .max(8, { message: "Max 8 letters" }),
     }),
     async resolve({ input, ctx }) {
-      const { id } = input;
+      const { documentId } = input;
       await ctx.prisma.patient.delete({
-        where: { id },
+        where: { documentId },
       });
     },
   });

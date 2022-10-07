@@ -1,24 +1,39 @@
 import type { GetStaticProps, NextPage } from "next";
-import Link from "next/link";
+import type { PatientProps } from "~/lib/types";
+import { useState } from "react";
+// tRPC
 import { createSSGHelpers } from "@trpc/react/ssg";
 import superjson from "superjson";
-import { Button, Anchor, ActionIcon } from "@mantine/core";
-import { IconAdjustments } from "@tabler/icons";
 import { appRouter } from "~/server/router";
 import { createContext } from "~/server/router/context";
 import { trpc } from "~/utils/trpc";
+// Lib
+import { patientSchema } from "~/lib/schemas";
+import { patientInitialValues } from "~/lib/data";
+// Mantine
+import { useForm, zodResolver } from "@mantine/form";
+// Components
 import Container from "~/components/Container";
+import DataList from "~/components/DataList";
 import Form from "~/components/Form";
 
 const Home: NextPage = () => {
+  const [createState, createSetState] = useState<boolean>(true);
+
   const utils = trpc.useContext();
   const patientsQuery = trpc.useQuery(["patient.getAll"]);
 
-  // const updatePatient = trpc.useMutation(["patient.update"], {
-  //   async onSuccess() {
-  //     await utils.invalidateQueries(["patient.getAll"]);
-  //   },
-  // });
+  const createPatient = trpc.useMutation(["patient.create"], {
+    async onSuccess() {
+      await utils.invalidateQueries(["patient.getAll"]);
+    },
+  });
+
+  const updatePatient = trpc.useMutation(["patient.update"], {
+    async onSuccess() {
+      await utils.invalidateQueries(["patient.getAll"]);
+    },
+  });
 
   const deletePatient = trpc.useMutation(["patient.delete"], {
     async onSuccess() {
@@ -26,53 +41,60 @@ const Home: NextPage = () => {
     },
   });
 
-  // const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log("update");
-  // };
+  const form = useForm({
+    validate: zodResolver(patientSchema),
+    initialValues: patientInitialValues,
+  });
 
-  const handleDelete = async (id: string) => {
-    const input = {
-      id: id,
-    };
+  const handleReset = () => {
+    form.reset();
+    createSetState(true);
+  };
+
+  const handleSubmit = async (patient: PatientProps) => {
+    try {
+      if (createState) {
+        await createPatient.mutateAsync(patient);
+      } else {
+        await updatePatient.mutateAsync(patient);
+      }
+      handleReset();
+    } catch {}
+  };
+
+  const handleUpdate = (patient: PatientProps) => {
+    createSetState(false);
+    Object.entries(patient).forEach(([key, value]) => {
+      form.setFieldValue(key, value);
+    });
+  };
+
+  const handleDelete = async (documentId: string) => {
+    const input = { documentId };
     try {
       await deletePatient.mutateAsync(input);
+      handleReset();
     } catch {}
   };
 
   return (
     <Container>
-      {patientsQuery.data ? (
-        <ul className="p-0 list-inside">
-          {patientsQuery.data?.map((patient) => (
-            <li key={patient.id} className="my-4">
-              <Link href={`/patient/${patient.id}`} passHref>
-                <Anchor component="a">
-                  {patient.documentId} - {patient.firstName} {patient.lastName}
-                </Anchor>
-              </Link>
+      <DataList
+        data={patientsQuery.data}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+      />
 
-              <Button
-                className="ml-2"
-                color="red"
-                size="xs"
-                onClick={() => handleDelete(patient.id)}
-              >
-                Delete
-              </Button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-2xl font-bold">Loading..</p>
-      )}
+      <h1>{createState ? "Create" : "Update"}</h1>
 
-      {/* <Form onSubmit={handleSubmit} isLoading={createPatient.isLoading} />
-      {createPatient && (
-        <p style={{ color: "red" }}>{createPatient.error?.message}</p>
-      )} */}
-
-      <Form />
+      <Form
+        form={form}
+        createState={createState}
+        createPatient={createPatient.isLoading}
+        updatePatient={updatePatient.isLoading}
+        onSubmit={handleSubmit}
+        onReset={handleReset}
+      />
     </Container>
   );
 };
