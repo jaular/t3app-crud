@@ -15,10 +15,10 @@ model Example {
 }
 
 model Patient {
-  id         String   @id @default(cuid())
-  documentId String   @unique @db.VarChar(20)
+  documentId String   @id @db.VarChar(20)
   firstName  String   @db.VarChar(30)
   lastName   String   @db.VarChar(30)
-  gender     String   @db.VarChar(30)
+  gender     String   @db.VarChar(15)
+  email      String   @db.VarChar(256)
   createdAt  DateTime @default(now()) @db.DateTime(6)
 }
