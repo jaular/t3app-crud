@@ -2,11 +2,7 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {
-      listStyleType: {
-        square: "square",
-      },
-    },
+    extend: {},
   },
   plugins: [],
 };

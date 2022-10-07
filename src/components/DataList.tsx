@@ -13,7 +13,7 @@ const DataList = ({ data, onUpdate, onDelete }: Props) => {
   return (
     <>
       {data?.length ? (
-        <List listStyleType={"none"} className="list-square">
+        <List>
           {data?.map((item) => (
             <List.Item key={item.documentId}>
               <Group>
