@@ -14,14 +14,14 @@ import { patientInitialValues } from "~/lib/data";
 import { useForm, zodResolver } from "@mantine/form";
 // Components
 import Container from "~/components/Container";
-import DataList from "~/components/DataList";
+import TableList from "~/components/TableList";
 import Form from "~/components/Form";
 
 const Home: NextPage = () => {
   const [createState, createSetState] = useState<boolean>(true);
 
   const utils = trpc.useContext();
-  const patientsQuery = trpc.useQuery(["patient.getAll"]);
+  const { data, isSuccess } = trpc.useQuery(["patient.getAll"]);
 
   const createPatient = trpc.useMutation(["patient.create"], {
     async onSuccess() {
@@ -79,8 +79,8 @@ const Home: NextPage = () => {
 
   return (
     <Container>
-      <DataList
-        data={patientsQuery.data}
+      <TableList
+        data={isSuccess ? data : []}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />
