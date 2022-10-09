@@ -1,6 +1,6 @@
 import type { UseFormReturnType } from "@mantine/form";
 import type { PatientProps } from "~/lib/types";
-import { Button, Select, TextInput } from "@mantine/core";
+import { Button, Select, TextInput, Group } from "@mantine/core";
 import InputMask from "react-input-mask-next";
 
 type Props = {
@@ -27,7 +27,7 @@ const Form = ({
         onSubmit={form.onSubmit((values) => onSubmit(values))}
         autoComplete="off"
       >
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 xl:gap-8">
           <TextInput
             label="Document ID"
             placeholder="Document ID"
@@ -69,7 +69,7 @@ const Form = ({
             {...form.getInputProps("phoneNumber")}
           />
         </div>
-        <div className="space-x-4">
+        <Group>
           <Button type="submit" disabled={createPatient || updatePatient}>
             Submit
           </Button>
@@ -81,7 +81,7 @@ const Form = ({
           >
             Cancel
           </Button>
-        </div>
+        </Group>
       </form>
     </>
   );
