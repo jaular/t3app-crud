@@ -4,4 +4,5 @@ export const patientInitialValues = {
   lastName: "",
   gender: "",
   email: "",
+  phoneNumber: "",
 };

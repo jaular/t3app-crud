@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const phoneNumberRegex =
+  /^\+?\d{1,4}?[-.\s]?\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+// https://www.abstractapi.com/guides/validate-phone-number-javascript
+// https://uibakery.io/regex-library/phone-number
+
 export const patientSchema = z.object({
   documentId: z
     .string()
@@ -18,4 +23,7 @@ export const patientSchema = z.object({
     .trim(),
   gender: z.string().min(2, { message: "Pick one gender" }).trim(),
   email: z.string().email({ message: "Invalid email address" }).trim(),
+  phoneNumber: z
+    .string()
+    .regex(phoneNumberRegex, { message: "Invalid phone number" }),
 });

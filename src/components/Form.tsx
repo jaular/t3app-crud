@@ -1,6 +1,7 @@
 import type { UseFormReturnType } from "@mantine/form";
 import type { PatientProps } from "~/lib/types";
 import { Button, Select, TextInput } from "@mantine/core";
+import InputMask from "react-input-mask-next";
 
 type Props = {
   form: UseFormReturnType<PatientProps>;
@@ -58,6 +59,14 @@ const Form = ({
             placeholder="Email"
             withAsterisk
             {...form.getInputProps("email")}
+          />
+          <TextInput
+            component={InputMask}
+            mask="+58 (999) 999-9999"
+            label="Phone number"
+            placeholder="Phone number"
+            withAsterisk
+            {...form.getInputProps("phoneNumber")}
           />
         </div>
         <div className="space-x-4">

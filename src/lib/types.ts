@@ -4,4 +4,5 @@ export type PatientProps = {
   lastName: string;
   gender: string;
   email: string;
+  phoneNumber: string;
 };

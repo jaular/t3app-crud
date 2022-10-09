@@ -9,6 +9,7 @@ const defaultPatientSelect = Prisma.validator<Prisma.PatientSelect>()({
   lastName: true,
   gender: true,
   email: true,
+  phoneNumber: true,
   createdAt: true,
 });
 
