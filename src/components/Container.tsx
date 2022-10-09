@@ -1,4 +1,6 @@
 import Head from "next/head";
+import Header from "~/components/Header";
+import Footer from "~/components/Footer";
 
 type Props = {
   title?: string;
@@ -14,9 +16,11 @@ const Container = ({ title = "Home", children }: Props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full max-w-5xl px-4 mx-auto my-10 antialiased sm:px-6 md:my-12 lg:px-8">
+      <Header />
+      <main className="w-full max-w-6xl px-4 mx-auto my-16 antialiased sm:px-6 md:my-20 lg:px-8">
         {children}
       </main>
+      <Footer />
     </>
   );
 };
