@@ -203,8 +203,8 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
   return (
     <>
       <TextInput
+        className="md:max-w-sm"
         placeholder="Search by document id or name"
-        mb="lg"
         icon={<IconSearch size={14} stroke={1.5} />}
         value={search}
         autoComplete="off"
@@ -212,7 +212,8 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
       />
 
       <ScrollArea
-        sx={{ height: 250 }}
+        className="mt-8"
+        sx={{ height: 254 }}
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
       >
         <Table
