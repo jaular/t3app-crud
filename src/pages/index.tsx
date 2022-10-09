@@ -1,24 +1,23 @@
 import type { GetStaticProps, NextPage } from "next";
 import type { PatientProps } from "~/lib/types";
 import { useState } from "react";
-// tRPC
 import { createSSGHelpers } from "@trpc/react/ssg";
 import superjson from "superjson";
 import { appRouter } from "~/server/router";
 import { createContext } from "~/server/router/context";
 import { trpc } from "~/utils/trpc";
-// Lib
 import { patientSchema } from "~/lib/schemas";
 import { patientInitialValues } from "~/lib/data";
-// Mantine
+import { Modal, Button, Group } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useForm, zodResolver } from "@mantine/form";
-// Components
 import Container from "~/components/Container";
 import TableList from "~/components/TableList";
 import Form from "~/components/Form";
 
 const Home: NextPage = () => {
-  const [createState, createSetState] = useState<boolean>(true);
+  const [formModalOpened, setFormModalOpened] = useState<boolean>(false);
+  const [createState, setCreateState] = useState<boolean>(true);
 
   const utils = trpc.useContext();
   const { data, isSuccess } = trpc.useQuery(["patient.getAll"]);
@@ -47,8 +46,9 @@ const Home: NextPage = () => {
   });
 
   const handleReset = () => {
+    setFormModalOpened(false);
+    setCreateState(true);
     form.reset();
-    createSetState(true);
   };
 
   const handleSubmit = async (patient: PatientProps) => {
@@ -63,7 +63,8 @@ const Home: NextPage = () => {
   };
 
   const handleUpdate = (patient: PatientProps) => {
-    createSetState(false);
+    setFormModalOpened(true);
+    setCreateState(false);
     Object.entries(patient).forEach(([key, value]) => {
       form.setFieldValue(key, value);
     });
@@ -79,22 +80,34 @@ const Home: NextPage = () => {
 
   return (
     <Container>
+      <Modal
+        centered
+        size={useMediaQuery("(max-width: 1200px)") ? "100%" : "80%"}
+        title={<h2 className="m-0">{createState ? "Create" : "Update"}</h2>}
+        opened={formModalOpened}
+        onClose={() => handleReset()}
+      >
+        <Form
+          form={form}
+          createState={createState}
+          createPatient={createPatient.isLoading}
+          updatePatient={updatePatient.isLoading}
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+        />
+      </Modal>
+
       <TableList
         data={isSuccess ? data : []}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />
 
-      <h1>{createState ? "Create" : "Update"}</h1>
-
-      <Form
-        form={form}
-        createState={createState}
-        createPatient={createPatient.isLoading}
-        updatePatient={updatePatient.isLoading}
-        onSubmit={handleSubmit}
-        onReset={handleReset}
-      />
+      <Group position="center" className="mt-8">
+        <Button variant="default" onClick={() => setFormModalOpened(true)}>
+          Add new record
+        </Button>
+      </Group>
     </Container>
   );
 };
