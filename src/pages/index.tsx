@@ -46,9 +46,9 @@ const Home: NextPage = () => {
   });
 
   const handleReset = () => {
-    setFormModalOpened(false);
-    setCreateState(true);
     form.reset();
+    setCreateState(true);
+    setFormModalOpened(false);
   };
 
   const handleSubmit = async (patient: PatientProps) => {
@@ -63,11 +63,11 @@ const Home: NextPage = () => {
   };
 
   const handleUpdate = (patient: PatientProps) => {
-    setFormModalOpened(true);
-    setCreateState(false);
     Object.entries(patient).forEach(([key, value]) => {
       form.setFieldValue(key, value);
     });
+    setCreateState(false);
+    setFormModalOpened(true);
   };
 
   const handleDelete = async (documentId: string) => {
@@ -82,6 +82,7 @@ const Home: NextPage = () => {
     <Container>
       <Modal
         centered
+        overlayBlur={3}
         size={useMediaQuery("(max-width: 1200px)") ? "100%" : "80%"}
         title={<h2 className="m-0">{createState ? "Create" : "Update"}</h2>}
         opened={formModalOpened}
