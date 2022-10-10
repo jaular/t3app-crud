@@ -1,6 +1,9 @@
 import type { UseFormReturnType } from "@mantine/form";
 import type { PatientProps } from "~/lib/types";
-import { Button, Select, TextInput, Group } from "@mantine/core";
+import { Button, Select, TextInput, NumberInput, Group } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import "dayjs/locale/es";
+import moment from "moment";
 import InputMask from "react-input-mask-next";
 
 type Props = {
@@ -20,6 +23,11 @@ const Form = ({
   onSubmit,
   onReset,
 }: Props) => {
+  const age = moment().diff(
+    { ...form.getInputProps("birthDate") }.value,
+    "years"
+  );
+
   return (
     <>
       <form
@@ -27,7 +35,7 @@ const Form = ({
         onSubmit={form.onSubmit((values) => onSubmit(values))}
         autoComplete="off"
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 xl:gap-8">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-8">
           <TextInput
             label="Document ID"
             placeholder="Document ID"
@@ -47,9 +55,25 @@ const Form = ({
             withAsterisk
             {...form.getInputProps("lastName")}
           />
+          <div className="grid grid-cols-3 gap-4">
+            <DatePicker
+              className="col-span-2"
+              locale="es"
+              placeholder="Birth date"
+              label="Birth date"
+              withAsterisk
+              {...form.getInputProps("birthDate")}
+            />
+            <NumberInput
+              disabled
+              placeholder="Age"
+              label="Age"
+              value={isNaN(age) ? 0 : age}
+            />
+          </div>
           <Select
             label="Gender"
-            placeholder="Pick one"
+            placeholder="Gender"
             data={["Male", "Female", "Other"]}
             withAsterisk
             {...form.getInputProps("gender")}

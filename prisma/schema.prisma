@@ -18,6 +18,7 @@ model Patient {
   documentId  String   @id @db.VarChar(20)
   firstName   String   @db.VarChar(30)
   lastName    String   @db.VarChar(30)
+  birthDate   DateTime @db.DateTime(6)
   gender      String   @db.VarChar(15)
   email       String   @db.VarChar(256)
   phoneNumber String   @db.VarChar(30)

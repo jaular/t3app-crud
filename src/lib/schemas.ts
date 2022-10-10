@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+const documentIdRegex = /^\d{7,8}$/;
 const phoneNumberRegex =
   /^\+?\d{1,4}?[-.\s]?\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
 // https://www.abstractapi.com/guides/validate-phone-number-javascript
@@ -8,8 +9,7 @@ const phoneNumberRegex =
 export const patientSchema = z.object({
   documentId: z
     .string()
-    .min(7, { message: "Document ID should have at least 7 letters" })
-    .max(8, { message: "Max 8 letters" })
+    .regex(documentIdRegex, { message: "Invalid document id" })
     .trim(),
   firstName: z
     .string()
@@ -21,6 +21,7 @@ export const patientSchema = z.object({
     .min(2, { message: "Last name should have at least 2 letters" })
     .max(30, { message: "Max 30 letters" })
     .trim(),
+  birthDate: z.date(),
   gender: z.string().min(2, { message: "Pick one gender" }).trim(),
   email: z.string().email({ message: "Invalid email address" }).trim(),
   phoneNumber: z
