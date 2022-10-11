@@ -23,6 +23,7 @@ const Form = ({
   onSubmit,
   onReset,
 }: Props) => {
+  // const [id, setId] = useState<string | undefined>(form.values.id);
   const age = moment().diff(
     { ...form.getInputProps("birthDate") }.value,
     "years"
@@ -35,7 +36,14 @@ const Form = ({
         onSubmit={form.onSubmit((values) => onSubmit(values))}
         autoComplete="off"
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 xl:gap-8">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+          {/* <TextInput
+            label="ID"
+            placeholder="Auto-Generated ID"
+            value={id}
+            onChange={() => setId(id)}
+            disabled
+          /> */}
           <TextInput
             label="Document ID"
             placeholder="Document ID"
@@ -43,19 +51,7 @@ const Form = ({
             withAsterisk
             {...form.getInputProps("documentId")}
           />
-          <TextInput
-            label="First name"
-            placeholder="First name"
-            withAsterisk
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            label="Last name"
-            placeholder="Last name"
-            withAsterisk
-            {...form.getInputProps("lastName")}
-          />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-1">
             <DatePicker
               className="col-span-2"
               locale="es"
@@ -68,9 +64,21 @@ const Form = ({
               disabled
               placeholder="Age"
               label="Age"
-              value={isNaN(age) ? 0 : age}
+              value={isNaN(age) ? 0 : age >= 0 ? age : 0}
             />
           </div>
+          <TextInput
+            label="First name"
+            placeholder="First name"
+            withAsterisk
+            {...form.getInputProps("firstName")}
+          />
+          <TextInput
+            label="Last name"
+            placeholder="Last name"
+            withAsterisk
+            {...form.getInputProps("lastName")}
+          />
           <Select
             label="Gender"
             placeholder="Gender"
@@ -79,9 +87,13 @@ const Form = ({
             {...form.getInputProps("gender")}
           />
           <TextInput
+            label="Adress"
+            placeholder="Adress"
+            {...form.getInputProps("adress")}
+          />
+          <TextInput
             label="Email"
             placeholder="Email"
-            withAsterisk
             {...form.getInputProps("email")}
           />
           <TextInput
@@ -91,6 +103,11 @@ const Form = ({
             placeholder="Phone number"
             withAsterisk
             {...form.getInputProps("phoneNumber")}
+          />
+          <TextInput
+            label="Occupation"
+            placeholder="Occupation"
+            {...form.getInputProps("occupation")}
           />
         </div>
         <Group>

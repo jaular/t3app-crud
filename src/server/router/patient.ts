@@ -9,9 +9,11 @@ const defaultPatientSelect = Prisma.validator<Prisma.PatientSelect>()({
   lastName: true,
   birthDate: true,
   gender: true,
+  adress: true,
   email: true,
   phoneNumber: true,
   createdAt: true,
+  occupation: true,
 });
 
 export const patientRouter = createRouter()
@@ -27,10 +29,7 @@ export const patientRouter = createRouter()
   // By id
   .query("byId", {
     input: z.object({
-      documentId: z
-        .string()
-        .min(7, { message: "Document ID should have at least 7 letters" })
-        .max(8, { message: "Max 8 letters" }),
+      documentId: z.string(),
     }),
     async resolve({ input, ctx }) {
       const { documentId } = input;
@@ -67,10 +66,7 @@ export const patientRouter = createRouter()
   // Delete patient
   .mutation("delete", {
     input: z.object({
-      documentId: z
-        .string()
-        .min(7, { message: "Document ID should have at least 7 letters" })
-        .max(8, { message: "Max 8 letters" }),
+      documentId: z.string(),
     }),
     async resolve({ input, ctx }) {
       const { documentId } = input;
