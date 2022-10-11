@@ -101,7 +101,6 @@ const Form = ({
             mask="+58 (999) 999-9999"
             label="Phone number"
             placeholder="Phone number"
-            withAsterisk
             {...form.getInputProps("phoneNumber")}
           />
           <TextInput
@@ -115,7 +114,7 @@ const Form = ({
             Submit
           </Button>
           <Button
-            color="red"
+            variant="default"
             onClick={() => {
               onReset();
             }}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   createStyles,
   Table,
+  Modal,
   ScrollArea,
   Group,
   ActionIcon,
@@ -12,6 +13,7 @@ import {
   Text,
   Center,
   TextInput,
+  Button,
 } from "@mantine/core";
 import {
   IconPencil,
@@ -141,6 +143,8 @@ function sortData(
 
 const TableList = ({ data, onUpdate, onDelete }: Props) => {
   const { classes, cx } = useStyles();
+  const [userId, setUserId] = useState("");
+  const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof PatientProps | null>(null);
@@ -192,7 +196,10 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
             color="red"
             size={32}
             variant="light"
-            onClick={() => onDelete(row.documentId)}
+            onClick={() => {
+              setDeleteModalOpened(true);
+              setUserId(row.documentId);
+            }}
           >
             <IconTrash size={18} stroke={1.5} />
           </ActionIcon>
@@ -203,6 +210,36 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
 
   return (
     <>
+      <Modal
+        overlayBlur={3}
+        opened={deleteModalOpened}
+        onClose={() => setDeleteModalOpened(false)}
+        title={<h2 className="m-0">Delete</h2>}
+      >
+        <p>
+          Are you sure you want to delete user: <strong>{userId}</strong>?
+        </p>
+        <Group>
+          <Button
+            color="red"
+            onClick={() => {
+              onDelete(userId);
+              setDeleteModalOpened(false);
+            }}
+          >
+            Yes, delete user
+          </Button>
+          <Button
+            variant="default"
+            onClick={() => {
+              setDeleteModalOpened(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </Group>
+      </Modal>
+
       <TextInput
         className="md:max-w-sm"
         placeholder="Search by document id or name"
