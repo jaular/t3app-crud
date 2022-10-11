@@ -173,10 +173,11 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
           <Anchor component="a">{row.documentId}</Anchor>
         </Link>
       </td>
+
       <td>
         {row.firstName} {row.lastName}
       </td>
-      <td>{row.email}</td>
+      <td>{row.gender}</td>
       <td>
         <Group>
           <ActionIcon
@@ -241,11 +242,11 @@ const TableList = ({ data, onUpdate, onDelete }: Props) => {
                 Name
               </Th>
               <Th
-                sorted={sortBy === "email"}
+                sorted={sortBy === "gender"}
                 reversed={reverseSortDirection}
-                onSort={() => setSorting("email")}
+                onSort={() => setSorting("gender")}
               >
-                Email
+                Gender
               </Th>
               <th />
             </tr>

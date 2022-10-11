@@ -81,7 +81,6 @@ const Home: NextPage = () => {
   return (
     <Container>
       <Modal
-        centered
         overlayBlur={3}
         size={useMediaQuery("(max-width: 1200px)") ? "100%" : "80%"}
         title={<h2 className="m-0">{createState ? "Create" : "Update"}</h2>}

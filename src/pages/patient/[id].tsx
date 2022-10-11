@@ -16,13 +16,14 @@ import { trpc } from "~/utils/trpc";
 import { Anchor } from "@mantine/core";
 // Components
 import Container from "~/components/Container";
+import Chart from "~/components/Chart";
 
 const UserPage: NextPage = ({
-  documentId,
+  id,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const userQuery = trpc.useQuery(["patient.byId", { documentId }]);
+  const userQuery = trpc.useQuery(["patient.byId", { documentId: id }]);
   return (
-    <Container title={`Patient - ${documentId}`}>
+    <Container title={`Patient - ${id}`}>
       {userQuery.data ? (
         <>
           <h1>{userQuery.data.documentId}</h1>
@@ -35,11 +36,14 @@ const UserPage: NextPage = ({
           </pre>
         </>
       ) : (
-        <h1>No patient with Document ID: {documentId}</h1>
+        <h1>No patient with Document ID: {id}</h1>
       )}
       <Link href="/" passHref>
         <Anchor component="a">Back to home</Anchor>
       </Link>
+      {/* <div className="mt-8">
+        <Chart />
+      </div> */}
     </Container>
   );
 };
@@ -53,7 +57,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = patients.map((patient) => ({
     params: {
-      documentId: patient.documentId,
+      id: patient.documentId,
     },
   }));
 
@@ -64,7 +68,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { documentId = "" } = params as { documentId: string };
+  const { id = "" } = params as { id: string };
 
   const ssg = createSSGHelpers({
     router: appRouter,
@@ -72,7 +76,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     transformer: superjson,
   });
 
-  const patient = await ssg.fetchQuery("patient.byId", { documentId });
+  const patient = await ssg.fetchQuery("patient.byId", { documentId: id });
 
   if (!patient) {
     return {
@@ -86,7 +90,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       trpcState: ssg.dehydrate(),
-      documentId,
+      id,
     },
     revalidate: 1,
   };
