@@ -36,7 +36,7 @@ const Form = ({
         onSubmit={form.onSubmit((values) => onSubmit(values))}
         autoComplete="off"
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-4">
           {/* <TextInput
             label="ID"
             placeholder="Auto-Generated ID"
