@@ -9,4 +9,5 @@ export const patientInitialValues = {
   email: "",
   phoneNumber: "",
   occupation: "",
+  habits: [""],
 };

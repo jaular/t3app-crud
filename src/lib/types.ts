@@ -9,4 +9,5 @@ export type PatientProps = {
   email: string;
   phoneNumber: string;
   occupation: string;
+  habits: string[];
 };

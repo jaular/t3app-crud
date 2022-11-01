@@ -1,6 +1,14 @@
 import type { UseFormReturnType } from "@mantine/form";
 import type { PatientProps } from "~/lib/types";
-import { Button, Select, TextInput, NumberInput, Group } from "@mantine/core";
+import {
+  Button,
+  Select,
+  TextInput,
+  NumberInput,
+  Checkbox,
+  Group,
+  Divider,
+} from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import "dayjs/locale/es";
 import moment from "moment";
@@ -34,6 +42,7 @@ const Form = ({
       <form
         className="space-y-8"
         onSubmit={form.onSubmit((values) => onSubmit(values))}
+        // onSubmit={form.onSubmit((values) => console.log(values))}
         autoComplete="off"
       >
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 xl:grid-cols-4">
@@ -108,6 +117,22 @@ const Form = ({
             placeholder="Occupation"
             {...form.getInputProps("occupation")}
           />
+          <Divider
+            my="xs"
+            label="Advance options"
+            labelPosition="center"
+            className="col-span-2 md:col-span-3 xl:col-span-4"
+          />
+          <Checkbox.Group
+            className="col-span-2 md:col-span-3 xl:col-span-4"
+            label="Habits"
+            {...form.getInputProps("habits")}
+          >
+            <Checkbox value="CF" label="CF" />
+            <Checkbox value="ALH" label="ALH" />
+            <Checkbox value="CG" label="CG" />
+            <Checkbox value="DRG" label="DRG" />
+          </Checkbox.Group>
         </div>
         <Group>
           <Button type="submit" disabled={createPatient || updatePatient}>
