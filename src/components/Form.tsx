@@ -96,9 +96,9 @@ const Form = ({
             {...form.getInputProps("gender")}
           />
           <TextInput
-            label="Adress"
-            placeholder="Adress"
-            {...form.getInputProps("adress")}
+            label="Address"
+            placeholder="Address"
+            {...form.getInputProps("address")}
           />
           <TextInput
             label="Email"

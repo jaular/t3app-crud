@@ -23,7 +23,7 @@ export const patientSchema = z.object({
     .trim(),
   birthDate: z.date(),
   gender: z.string().min(2, { message: "Pick one gender" }).trim(),
-  adress: z.string().min(2).max(250).or(z.literal("")),
+  address: z.string().min(2).max(250).or(z.literal("")),
   email: z
     .string()
     .email({ message: "Invalid email address" })

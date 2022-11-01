@@ -23,7 +23,7 @@ model Patient {
   email       String   @db.VarChar(256)
   phoneNumber String   @db.VarChar(30)
   occupation  String   @db.VarChar(30)
-  adress      String   @db.VarChar(256)
+  address     String   @db.VarChar(256)
   habits      String[]
   createdAt   DateTime @default(now())
 }
