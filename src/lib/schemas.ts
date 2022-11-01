@@ -34,5 +34,5 @@ export const patientSchema = z.object({
     .regex(phoneNumberRegex, { message: "Invalid phone number" })
     .or(z.literal("")),
   occupation: z.string().or(z.literal("")),
-  habits: z.string().optional().array(), // (string | undefined)[]
+  habits: z.string().array().optional(), // string[] | undefined
 });
