@@ -25,5 +25,5 @@ model Patient {
   occupation  String   @db.VarChar(30)
   adress      String   @db.VarChar(256)
   habits      String[]
-  createdAt   DateTime @default(now()) @db.Date
+  createdAt   DateTime @default(now())
 }
