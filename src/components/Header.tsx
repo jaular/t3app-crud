@@ -12,7 +12,7 @@ const Header = () => {
   const { classes } = useStyles();
   return (
     <header className={`${classes.header} text-center`}>
-      <h2>Header</h2>
+      <h2>T3 APP - CRUD</h2>
     </header>
   );
 };
