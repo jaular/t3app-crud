@@ -1,4 +1,4 @@
-import { createStyles } from "@mantine/core";
+import { createStyles, Text, Anchor } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -12,7 +12,12 @@ const Footer = () => {
   const { classes } = useStyles();
   return (
     <footer className={`${classes.footer} text-center`}>
-      <h2>Footer</h2>
+      <Text className="my-4" size="sm">
+        Built by{" "}
+        <Anchor href="https://github.com/jaular" target="_blank" underline>
+          jaular
+        </Anchor>
+      </Text>
     </footer>
   );
 };
