@@ -15,6 +15,7 @@ const defaultPatientSelect = Prisma.validator<Prisma.PatientSelect>()({
   createdAt: true,
   occupation: true,
   habits: true,
+  personalMedicalHistory: true,
 });
 
 export const patientRouter = createRouter()

@@ -10,4 +10,5 @@ export const patientInitialValues = {
   phoneNumber: "",
   occupation: "",
   habits: [""],
+  personalMedicalHistory: [""],
 };

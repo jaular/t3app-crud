@@ -10,4 +10,5 @@ export type PatientProps = {
   phoneNumber: string;
   occupation: string;
   habits: string[];
+  personalMedicalHistory: string[];
 };

@@ -9,7 +9,9 @@ const phoneNumberRegex =
 export const patientSchema = z.object({
   documentId: z
     .string()
-    .regex(documentIdRegex, { message: "Invalid document id" })
+    .regex(documentIdRegex, {
+      message: "Invalid document id, should have at least 7-8 numbers",
+    })
     .trim(),
   firstName: z
     .string()
@@ -21,9 +23,16 @@ export const patientSchema = z.object({
     .min(2, { message: "Last name should have at least 2 letters" })
     .max(30, { message: "Max 30 letters" })
     .trim(),
-  birthDate: z.date(),
+  birthDate: z.date({
+    required_error: "Please select a date and time",
+    invalid_type_error: "That's not a date!",
+  }),
   gender: z.string().min(2, { message: "Pick one gender" }).trim(),
-  address: z.string().min(2).max(250).or(z.literal("")),
+  address: z
+    .string()
+    .min(2, { message: "Address should have at least 2 letters" })
+    .max(250, { message: "Max 250 letters" })
+    .or(z.literal("")),
   email: z
     .string()
     .email({ message: "Invalid email address" })
@@ -33,6 +42,11 @@ export const patientSchema = z.object({
     .string()
     .regex(phoneNumberRegex, { message: "Invalid phone number" })
     .or(z.literal("")),
-  occupation: z.string().or(z.literal("")),
+  occupation: z
+    .string()
+    .min(2, { message: "Occupation should have at least 2 letters" })
+    .max(250, { message: "Max 250 letters" })
+    .or(z.literal("")),
   habits: z.string().array().optional(), // string[] | undefined
+  personalMedicalHistory: z.string().array().optional(),
 });

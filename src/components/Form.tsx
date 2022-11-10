@@ -133,6 +133,24 @@ const Form = ({
             <Checkbox value="CG" label="CG" />
             <Checkbox value="DRG" label="DRG" />
           </Checkbox.Group>
+          <Checkbox.Group
+            className="col-span-2 md:col-span-3 xl:col-span-4"
+            label="Personal medical history"
+            {...form.getInputProps("personalMedicalHistory")}
+          >
+            <Checkbox value="HTA" label="HTA" />
+            <Checkbox value="DM1" label="DM1" />
+            <Checkbox value="DM2" label="DM2" />
+            <Checkbox value="AB" label="AB" />
+            <Checkbox value="EPOC" label="EPOC" />
+            <Checkbox value="TB" label="TB" />
+            <Checkbox value="CA" label="CA" />
+            <Checkbox value="VIH" label="VIH" />
+            <Checkbox value="FQ" label="FQ" />
+            <Checkbox value="ECV" label="ECV" />
+            <Checkbox value="TIR" label="TIR" />
+            <Checkbox value="Other" label="Other" />
+          </Checkbox.Group>
         </div>
         <Group>
           <Button type="submit" disabled={createPatient || updatePatient}>
